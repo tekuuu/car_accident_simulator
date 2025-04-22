@@ -1,32 +1,37 @@
 const express = require('express');
-const connectDB = require('./config/db');
 const cors = require('cors');
-require('dotenv').config();
+const { generateMultipleEmergencies } = require('./utils/locationGenerator');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
-// Connect to MongoDB
-connectDB();
+// Generate 10 random emergencies
+let emergencies = generateMultipleEmergencies(10);
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
 // Routes
-app.get('/', (req, res) => {
-  res.send('Car Emergency Backend is working!');
+app.get('/api/emergencies', (req, res) => {
+    res.json(emergencies);
 });
 
-const emergencyRoutes = require('./routes/emergencies');
-app.use('/emergencies', emergencyRoutes);
+// Optional: Endpoint to regenerate emergencies
+app.post('/api/regenerate', (req, res) => {
+    emergencies = generateMultipleEmergencies(10);
+    res.json(emergencies);
+});
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: 'Something went wrong!' });
+app.post('/api/emergencies', (req, res) => {
+    const newEmergency = {
+        ...req.body,
+        reportedAt: new Date()
+    };
+    emergencies.push(newEmergency);
+    res.status(201).json(newEmergency);
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });

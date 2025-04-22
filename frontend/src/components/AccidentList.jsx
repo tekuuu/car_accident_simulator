@@ -3,24 +3,29 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 function AccidentList() {
-  const [accidents, setAccidents] = useState([]);
+  const [locations, setLocations] = useState([]);
   const [serverLocation] = useState({ lat: 9.03, lng: 38.74 }); // Server location
 
   useEffect(() => {
-    axios.get('http://localhost:5000/emergencies')
+    axios.get('http://localhost:5001/api/emergencies')  // Updated endpoint
       .then(response => {
-        const accidentsWithDistance = response.data.map(accident => ({
-          ...accident,
+        // Take only first 5 locations
+        const locationData = response.data.slice(0, 5).map(item => ({
+          description: item.description,
+          lat: item.lat,
+          lng: item.lng,
           distance: calculateDistance(
             serverLocation.lat,
             serverLocation.lng,
-            accident.lat,
-            accident.lng
-          )
+            item.lat,
+            item.lng
+          ),
+          reportedAt: item.reportedAt,
+          address: item.address
         }));
-        setAccidents(accidentsWithDistance);
+        setLocations(locationData);
       })
-      .catch(error => console.error('Error fetching accidents:', error));
+      .catch(error => console.error('Error fetching locations:', error));
   }, []);
 
   // Calculate distance using Haversine formula
@@ -43,31 +48,30 @@ function AccidentList() {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6 text-blue-800">Accident Reports</h1>
-      <div className="mb-4">
-        <Link 
-          to="/map" 
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          Show Map
-        </Link>
-      </div>
+      <h1 className="text-3xl font-bold mb-6 text-blue-800">Location Reports</h1>
       <div className="grid gap-4">
-        {accidents.map((accident, index) => (
+        {locations.map((location, index) => (
           <div 
             key={index} 
             className="border rounded-lg p-4 shadow-md bg-white"
           >
-            <h2 className="text-xl font-semibold mb-2">{accident.description}</h2>
+            <h2 className="text-xl font-semibold mb-2">{location.description}</h2>
+            <p className="text-gray-600">Address: {location.address}</p>
             <p className="text-gray-600">
-              Location: ({accident.lat}, {accident.lng})
+              Coordinates: ({location.lat}, {location.lng})
             </p>
             <p className="text-blue-600 font-semibold">
-              Distance from server: {accident.distance} km
+              Distance from server: {location.distance} km
             </p>
-            <p className="text-gray-500 text-sm">
-              Reported: {new Date(accident.reportedAt).toLocaleString()}
+            <p className="text-gray-500 text-sm mb-3">
+              Reported: {new Date(location.reportedAt).toLocaleString()}
             </p>
+            <Link 
+              to={`/map?lat=${location.lat}&lng=${location.lng}`}
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 inline-block"
+            >
+              View on Map
+            </Link>
           </div>
         ))}
       </div>
