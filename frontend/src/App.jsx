@@ -7,7 +7,7 @@ import './index.css';
 function App() {
   return (
     <Router>
-      <div className="app-container">
+      <div className="w-full h-screen">
         <Routes>
           <Route path="/" element={<AccidentList />} />
           <Route path="/map" element={<MapPage />} />

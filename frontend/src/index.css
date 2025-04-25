@@ -1,8 +1,21 @@
+@import 'leaflet/dist/leaflet.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Make sure these styles are after Tailwind imports */
 .leaflet-container {
   width: 100%;
   height: 100vh;
+  z-index: 1;
+}
+
+/* Fix for marker icons */
+.leaflet-default-icon-path {
+  background-image: url(https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png);
+}
+
+.leaflet-default-shadow-path {
+  background-image: url(https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png);
 }

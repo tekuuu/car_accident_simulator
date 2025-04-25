@@ -16,7 +16,8 @@ const emergencySchema = new mongoose.Schema({
     type: {
         type: String,
         required: true,
-        enum: ['ACCIDENT', 'MEDICAL', 'FIRE', 'POLICE', 'OTHER']
+        default: 'ACCIDENT',
+        enum: ['ACCIDENT']
     },
     status: {
         type: String,
@@ -42,6 +43,10 @@ const emergencySchema = new mongoose.Schema({
     },
     additionalDetails: {
         type: String
+    },
+    carId: {
+        type: String,
+        required: true
     }
 });
 

@@ -22,7 +22,8 @@ router.post('/', async (req, res) => {
         severity: req.body.severity,
         address: req.body.address,
         contactPhone: req.body.contactPhone,
-        additionalDetails: req.body.additionalDetails
+        additionalDetails: req.body.additionalDetails,
+        carId: req.body.carId
     });
 
     try {

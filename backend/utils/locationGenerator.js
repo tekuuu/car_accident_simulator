@@ -1,48 +1,36 @@
 // Ethiopia's approximate bounding box
 const ETHIOPIA_BOUNDS = {
-    north: 14.8942, // Northern-most latitude
-    south: 3.4041,  // Southern-most latitude
-    east: 47.9824,  // Eastern-most longitude
-    west: 32.9975   // Western-most longitude
+    north: 14.8937,
+    south: 3.4041,
+    west: 33.0012,
+    east: 47.9823
 };
 
 // Major cities in Ethiopia for more realistic locations
 const MAJOR_CITIES = [
-    { name: 'Addis Ababa', lat: 9.0302, lng: 38.7452 },
-    { name: 'Dire Dawa', lat: 9.5913, lng: 41.8664 },
+    { name: 'Addis Ababa', lat: 9.0302, lng: 38.7468 },
+    { name: 'Dire Dawa', lat: 9.5933, lng: 41.8661 },
     { name: 'Mekelle', lat: 13.4967, lng: 39.4767 },
     { name: 'Gondar', lat: 12.6030, lng: 37.4521 },
-    { name: 'Bahir Dar', lat: 11.5742, lng: 37.3614 },
-    { name: 'Hawassa', lat: 7.0504, lng: 38.4955 },
-    { name: 'Jimma', lat: 7.6667, lng: 36.8333 },
-    { name: 'Dessie', lat: 11.1333, lng: 39.6333 },
-    { name: 'Jijiga', lat: 9.3500, lng: 42.8000 },
-    { name: 'Shashamane', lat: 7.2000, lng: 38.6000 }
+    { name: 'Bahir Dar', lat: 11.5842, lng: 37.3908 }
 ];
 
-// Emergency types and their descriptions
 const EMERGENCY_TYPES = [
-    { type: 'ACCIDENT', descriptions: [
-        'Car collision',
-        'Motorcycle accident',
-        'Vehicle rollover',
-        'Pedestrian accident',
-        'Multi-vehicle crash'
-    ]},
-    { type: 'MEDICAL', descriptions: [
-        'Medical emergency',
-        'Heart attack',
-        'Injury',
-        'Unconscious person',
-        'Breathing difficulty'
-    ]},
-    { type: 'FIRE', descriptions: [
-        'Building fire',
-        'Vehicle fire',
-        'Grass fire',
-        'Electrical fire',
-        'Commercial fire'
-    ]}
+    {
+        type: 'ACCIDENT',
+        descriptions: [
+            'Car collision',
+            'Vehicle rollover',
+            'Multi-vehicle crash',
+            'Rear-end collision',
+            'Side-impact collision',
+            'Head-on collision',
+            'Parking lot accident',
+            'Highway accident',
+            'Intersection crash',
+            'Single vehicle accident'
+        ]
+    }
 ];
 
 function randomInRange(min, max) {
@@ -85,12 +73,13 @@ function generateEmergency() {
         severity: ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'][Math.floor(Math.random() * 4)],
         reportedAt: new Date(Date.now() - Math.floor(Math.random() * 86400000)), // Random time in last 24 hours
         address: location.address,
-        contactPhone: `+251-${Math.floor(Math.random() * 900000000 + 100000000)}`
+        contactPhone: `+251-${Math.floor(Math.random() * 900000000 + 100000000)}`,
+        carId: `ETH-${Math.floor(Math.random() * 100000)}`
     };
 }
 
 function generateMultipleEmergencies(count) {
-    return Array.from({ length: count }, generateEmergency);
+    return Array.from({ length: count }, () => generateEmergency());
 }
 
 module.exports = {

@@ -10,12 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "axios": "^1.8.4",
+    "@react-leaflet/core": "^2.1.0",
     "leaflet": "^1.9.4",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-leaflet": "^5.0.0",
-    "react-router-dom": "^7.5.1"
+    "react-leaflet": "^4.2.1",
+    "react-router-dom": "^6.22.0",
+    "axios": "^1.6.7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
@@ -29,6 +30,6 @@
     "globals": "^16.0.0",
     "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17",
-    "vite": "^6.3.1"
+    "vite": "^4.5.0"
   }
 }
